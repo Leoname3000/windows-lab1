@@ -39,7 +39,7 @@ namespace WindowsLab1
             }
         }
 
-        public bool passwordCorrect()
+        bool passwordCorrect()
         {
             String password = "aboba";
             if (text_password.Text == password)
@@ -49,9 +49,23 @@ namespace WindowsLab1
             return false;
         }
 
+        public bool loginSuccessful = false;
+
         private void btn_login_apply_Click(object sender, EventArgs e)
         {
-            this.Close();
+            if (comboBox_login.SelectedIndex == 1 && !passwordCorrect())
+            {
+                MessageBox.Show("Неверный пароль!");
+                this.text_password.Text = "";
+            }
+            else
+            {
+                if (comboBox_login.SelectedIndex == 1 && passwordCorrect())
+                {
+                    loginSuccessful = true;
+                }
+                this.Close();
+            }
         }
 
         private void btn_login_cancel_Click(object sender, EventArgs e)

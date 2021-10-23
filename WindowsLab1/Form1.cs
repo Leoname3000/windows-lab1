@@ -33,6 +33,7 @@ namespace WindowsLab1
             listBox_person.EndUpdate();
         }
 
+        // Calls EditForm to create new person (Create Mode) or edit existing person (EditUser or EditAdmin Mode)
         void callEditForm(EditForm.Mode mode)
         {
             EditForm editForm = new EditForm();
@@ -40,7 +41,7 @@ namespace WindowsLab1
             editForm.setMode(mode);
             int indexToEdit = -1;
 
-            // Set current values
+            // If form is called to edit (not create), set fields to selected person's values
             if (mode != EditForm.Mode.Create)
             {
                 indexToEdit = listBox_person.SelectedIndex;
@@ -49,34 +50,25 @@ namespace WindowsLab1
                 editForm.date_picker.Value = personList[indexToEdit].Birthday;
             }
 
-            DialogResult result = editForm.ShowDialog();
-            Person personToAdd = editForm.getPerson();
+            DialogResult result = editForm.ShowDialog(); // Call modal form
+            Person personToAdd = editForm.getPerson(); // Get values from EditForm
 
-            // If editForm returned OK, check if new values are proper, then apply them
+            // If EditForm returned OK, apply values (values are always correct, otherwise editForm wouldn't return OK)
             if (result == DialogResult.OK && personToAdd.CardNumber > -1 && personToAdd.Name != "")
             {
-                if (personToAdd.Birthday > DateTime.Now)
+                // Add new person if EditForm is called to create
+                if (mode == EditForm.Mode.Create)
                 {
-                    MessageBox.Show("Человек из будущего!");
+                    personList.Add(personToAdd);
+                    updateListBox();
                 }
-                else 
+                // Edit existing person, if EditForm is called to edit
+                else
                 {
-                    if (mode == EditForm.Mode.Create)
-                    {
-                        personList.Add(personToAdd);
-                        updateListBox();
-                    }
-                    else
-                    {
-                        personList[indexToEdit] = personToAdd;
-                        updateListBox();
-                    } 
-                }
+                    personList[indexToEdit] = personToAdd;
+                    updateListBox();
+                } 
             }
-        }
-        public int getSelectedIndex()
-        {
-            return listBox_person.SelectedIndex;
         }
 
         private void btn_add_Click(object sender, EventArgs e)
@@ -86,6 +78,7 @@ namespace WindowsLab1
 
         private void btn_change_Click(object sender, EventArgs e)
         {
+            // Check if any person is selected, then call EditForm to edit as 'user'
             if (listBox_person.SelectedIndex >= 0)
             {
                 callEditForm(EditForm.Mode.EditUser);
@@ -97,9 +90,9 @@ namespace WindowsLab1
             // Check if any person is selected, then proceed
             if (listBox_person.SelectedIndex >= 0)
             {
-                string deleteMessage = "Вы действительно хотите удалить запись?";
                 string deleteTitle = "Удаление";
-
+                string deleteMessage = "Вы действительно хотите удалить запись?";
+                
                 DialogResult deleteResult = MessageBox.Show(this, deleteMessage, deleteTitle, MessageBoxButtons.YesNo);
                 if (deleteResult == DialogResult.Yes)
                 {
