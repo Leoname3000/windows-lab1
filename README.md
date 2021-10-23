@@ -5,4 +5,4 @@ The goals are:
 - Create a modal form for editing people's data
 - Create a non-modal form for logging in as a user/admin
 - Make admin be able to change people's otherwise unchangeable data fields
-- Make 'Apply' button escape the mouse if the 'Card Number' field changed
+- Make 'Apply' button escape the mouse if the 'Card Number' field is changed
