@@ -1,5 +1,5 @@
 # windows-lab1
-Windows Lab 1 is the first lab work for Windows Apps Development course at Lobach Uni <3
+Windows Lab 1 is the first lab work for Windows Apps Development course at Lobach Uni <3  
 The goals are:
 - Create main form with list of people (described with Name, Card Number and Birthday)
 - Create a modal form for editing people's data
