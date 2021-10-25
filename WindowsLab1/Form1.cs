@@ -19,10 +19,26 @@ namespace WindowsLab1
             InitializeComponent();
         }
 
-        // Person list initialization
-        List<Person> personList = new List<Person>();
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+        }
 
-        void updateListBox()
+        //public int GetSelectedIndex()
+        //{
+        //    return listBox_person.SelectedIndex;
+        //}
+
+        //public Person GetSelectedPerson(int selectedIndex)
+        //{
+        //    //Person person = new Person(personList[selectedIndex].CardNumber, personList[selectedIndex].Name, personList[selectedIndex].Birthday);
+        //    Person person = personList[selectedIndex];
+        //    return person;
+        //}
+
+        void UpdateListBox()
         {
             listBox_person.BeginUpdate();
             listBox_person.Items.Clear();
@@ -33,13 +49,22 @@ namespace WindowsLab1
             listBox_person.EndUpdate();
         }
 
+        // Person list initialization
+        List<Person> personList = new List<Person>();
+
         // Calls EditForm to create new person (Create Mode) or edit existing person (EditUser or EditAdmin Mode)
-        void callEditForm(EditForm.Mode mode)
+        void CallEditForm(EditForm.Mode mode)
         {
             EditForm editForm = new EditForm();
 
-            editForm.setMode(mode);
+            editForm.SetMode(mode);
             int indexToEdit = -1;
+
+            // If editForm is called to edit, get selected index (done before calling editForm, because it may be changed after)
+            //if (mode != EditForm.Mode.Create)
+            //{
+            //    indexToEdit = GetSelectedIndex();
+            //}
 
             // If form is called to edit (not create), set fields to selected person's values
             if (mode != EditForm.Mode.Create)
@@ -51,7 +76,8 @@ namespace WindowsLab1
             }
 
             DialogResult result = editForm.ShowDialog(); // Call modal form
-            Person personToAdd = editForm.getPerson(); // Get values from EditForm
+            // Modal form editForm, in turn, calls GetSelectedPerson method if needed (if it is called to edit)
+            Person personToAdd = editForm.GetPerson(); // Get values from EditForm
 
             // If EditForm returned OK, apply values (values are always correct, otherwise editForm wouldn't return OK)
             if (result == DialogResult.OK && personToAdd.CardNumber > -1 && personToAdd.Name != "")
@@ -60,20 +86,19 @@ namespace WindowsLab1
                 if (mode == EditForm.Mode.Create)
                 {
                     personList.Add(personToAdd);
-                    updateListBox();
                 }
                 // Edit existing person, if EditForm is called to edit
                 else
                 {
                     personList[indexToEdit] = personToAdd;
-                    updateListBox();
-                } 
+                }
+                UpdateListBox();
             }
         }
 
         private void btn_add_Click(object sender, EventArgs e)
         {
-            callEditForm(EditForm.Mode.Create);
+            CallEditForm(EditForm.Mode.Create);
         }
 
         private void btn_change_Click(object sender, EventArgs e)
@@ -81,7 +106,16 @@ namespace WindowsLab1
             // Check if any person is selected, then call EditForm to edit as 'user'
             if (listBox_person.SelectedIndex >= 0)
             {
-                callEditForm(EditForm.Mode.EditUser);
+                CallEditForm(EditForm.Mode.EditUser);
+            }
+        }
+
+        // An alternative for 'Edit selected' button
+        private void listBox_person_doubleClick(object sender, MouseEventArgs e)
+        {
+            if (listBox_person.SelectedIndex >= 0)
+            {
+                CallEditForm(EditForm.Mode.EditUser);
             }
         }
 
@@ -101,13 +135,6 @@ namespace WindowsLab1
                     personList.RemoveAt(indexToDelete);
                 }
             }
-        }
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
         }
     }
 }

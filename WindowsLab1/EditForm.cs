@@ -18,6 +18,16 @@ namespace WindowsLab1
             InitializeComponent();
         }
 
+        private void EditForm_Load(object sender, EventArgs e)
+        {
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.AcceptButton = btn_edit_apply;
+            //Console.WriteLine(this.Width.ToString() + " " + this.Height.ToString());
+            //Console.WriteLine(this.btn_edit_apply.Width.ToString() + " " + this.btn_edit_apply.Height.ToString());
+        }
+
         public enum Mode
         {
             Create,
@@ -27,27 +37,40 @@ namespace WindowsLab1
 
         Mode mode = Mode.Create;
 
-        public void setMode(Mode mode)
+        // Changes EditForm's mode
+        public void SetMode(Mode mode)
         {
             Color highlightColor = System.Drawing.Color.Coral;
             Color backgroundColor = System.Drawing.Color.Yellow;
 
+            //if (mode != Mode.Create)
+            //{
+            //    Form1 callerForm1 = (Form1)this.Owner;
+            //    Person inputPerson = callerForm1.GetSelectedPerson(callerForm1.GetSelectedIndex());
+            //    text_name.Text = inputPerson.Name;
+            //    text_card.Text = Convert.ToString(inputPerson.CardNumber);
+            //    date_picker.Value = inputPerson.Birthday;
+            //}
+
+            this.mode = mode;
+
             switch (mode)
             {
                 case Mode.EditUser:
-                    this.mode = Mode.EditUser;
-                    this.text_card.Enabled = false;
-                    this.date_picker.Enabled = false;
+                    //this.mode = Mode.EditUser;
+                    text_card.Enabled = false;
+                    date_picker.Enabled = false;
                     break;
                 case Mode.EditAdmin:
-                    this.mode = Mode.EditAdmin;
-                    this.text_card.Enabled = true;
-                    this.date_picker.Enabled = true;
-                    this.label_card.BackColor = highlightColor;
-                    this.label_date.BackColor = highlightColor;
-                    this.BackColor = backgroundColor;
+                    //this.mode = Mode.EditAdmin;
+                    text_card.Enabled = true;
+                    date_picker.Enabled = true;
+                    label_card.BackColor = highlightColor;
+                    label_date.BackColor = highlightColor;
+                    BackColor = backgroundColor;
                     break;
                 default:
+                    //this.mode = Mode.Create;
                     date_picker.Value = defaultBirthday;
                     break;
             }
@@ -59,8 +82,8 @@ namespace WindowsLab1
         string name = "";
         DateTime defaultBirthday = new DateTime(2000, 1, 1, 0, 0, 0);
         DateTime birthday = DateTime.Now;
-        String wrongCardNumberMessage = "Номер карты должен состоять из 5 цифр!";
-        String futureBirthdayMessage = "Человек из будущего!";
+        String incorrectCardNumberMessage = "Номер карты должен состоять ровно из 5 цифр!";
+        String incorrectBirthdayMessage = "Человек из будущего!";
 
         private void btn_edit_apply_Click(object sender, EventArgs e)
         {
@@ -69,9 +92,9 @@ namespace WindowsLab1
             {
                 // If card number is incorrect, show message and clean field if it contains letters
                 bool parseSuccess = int.TryParse(text_card.Text, out cardNumber);
-                if (!(parseSuccess && text_card.Text.Length == 5))
+                if (!parseSuccess || text_card.Text.Length != 5 || cardNumber < 10000)
                 {
-                    MessageBox.Show(wrongCardNumberMessage);
+                    MessageBox.Show(incorrectCardNumberMessage);
                     if (!parseSuccess)
                     {
                         text_card.Text = "";
@@ -80,7 +103,7 @@ namespace WindowsLab1
                 // If birthday is incorrect, show message and set field to current time
                 else if (date_picker.Value > DateTime.Now)
                 {
-                    MessageBox.Show(futureBirthdayMessage);
+                    MessageBox.Show(incorrectBirthdayMessage);
                     date_picker.Value = defaultBirthday;
                 }
                 // Else (everything correct) set values and return OK
@@ -110,7 +133,7 @@ namespace WindowsLab1
         }
 
         // Send entered values as a person (called from Form1 if EditForm returns OK, i.e. the values are correct)
-        public Person getPerson()
+        public Person GetPerson()
         {
             Person person = new Person(cardNumber, name, birthday);
             return person;
@@ -135,7 +158,7 @@ namespace WindowsLab1
         {
             if (loginForm.loginSuccessful)
             {
-                this.setMode(Mode.EditAdmin);
+                this.SetMode(Mode.EditAdmin);
                 //bool parseSuccess = int.TryParse(text_card.Text, out cardNumber);
                 //if (!(parseSuccess && text_card.Text.Length == 5))
                 //{
@@ -146,7 +169,7 @@ namespace WindowsLab1
         }
 
         // Button's mouse escaping algorithm
-        void buttonEscape(Button button)
+        void ButtonEscape(Button button)
         {
             if (button.Location.X <= 15 - button.Location.X)
             {
@@ -165,16 +188,6 @@ namespace WindowsLab1
                     //text_card.Text = oldCardNumber.ToString();
                 }
             }
-        }
-
-        // On start, fix form size
-        private void EditForm_Load(object sender, EventArgs e)
-        {
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            //Console.WriteLine(this.Width.ToString() + " " + this.Height.ToString());
-            //Console.WriteLine(this.btn_edit_apply.Width.ToString() + " " + this.btn_edit_apply.Height.ToString());
         }
     }
 }

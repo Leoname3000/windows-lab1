@@ -37,17 +37,19 @@
             // listBox_person
             // 
             this.listBox_person.FormattingEnabled = true;
-            this.listBox_person.ItemHeight = 16;
-            this.listBox_person.Location = new System.Drawing.Point(12, 12);
+            this.listBox_person.Location = new System.Drawing.Point(9, 10);
+            this.listBox_person.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.listBox_person.Name = "listBox_person";
-            this.listBox_person.Size = new System.Drawing.Size(776, 340);
+            this.listBox_person.Size = new System.Drawing.Size(583, 277);
             this.listBox_person.TabIndex = 0;
+            this.listBox_person.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.listBox_person_doubleClick);
             // 
             // btn_change
             // 
-            this.btn_change.Location = new System.Drawing.Point(331, 376);
+            this.btn_change.Location = new System.Drawing.Point(248, 306);
+            this.btn_change.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn_change.Name = "btn_change";
-            this.btn_change.Size = new System.Drawing.Size(135, 46);
+            this.btn_change.Size = new System.Drawing.Size(101, 37);
             this.btn_change.TabIndex = 1;
             this.btn_change.Text = "Изменить выбранную";
             this.btn_change.UseVisualStyleBackColor = true;
@@ -55,9 +57,10 @@
             // 
             // btn_delete
             // 
-            this.btn_delete.Location = new System.Drawing.Point(565, 376);
+            this.btn_delete.Location = new System.Drawing.Point(424, 306);
+            this.btn_delete.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn_delete.Name = "btn_delete";
-            this.btn_delete.Size = new System.Drawing.Size(135, 46);
+            this.btn_delete.Size = new System.Drawing.Size(101, 37);
             this.btn_delete.TabIndex = 2;
             this.btn_delete.Text = "Удалить выбранную";
             this.btn_delete.UseVisualStyleBackColor = true;
@@ -65,9 +68,10 @@
             // 
             // btn_add
             // 
-            this.btn_add.Location = new System.Drawing.Point(96, 376);
+            this.btn_add.Location = new System.Drawing.Point(72, 306);
+            this.btn_add.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.btn_add.Name = "btn_add";
-            this.btn_add.Size = new System.Drawing.Size(135, 46);
+            this.btn_add.Size = new System.Drawing.Size(101, 37);
             this.btn_add.TabIndex = 3;
             this.btn_add.Text = "Создать новую запись";
             this.btn_add.UseVisualStyleBackColor = true;
@@ -75,13 +79,14 @@
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(600, 366);
             this.Controls.Add(this.btn_add);
             this.Controls.Add(this.btn_delete);
             this.Controls.Add(this.btn_change);
             this.Controls.Add(this.listBox_person);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Form1";
             this.Text = "Киндер пингви я люблю";
             this.Load += new System.EventHandler(this.Form1_Load);

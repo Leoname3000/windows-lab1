@@ -23,7 +23,7 @@ namespace WindowsLab1
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-
+            this.AcceptButton = btn_login_apply;
             this.comboBox_login.SelectedIndex = 0;
         }
 
@@ -39,7 +39,7 @@ namespace WindowsLab1
             }
         }
 
-        bool passwordCorrect()
+        bool PasswordCorrect()
         {
             String password = "aboba";
             if (text_password.Text == password)
@@ -53,14 +53,14 @@ namespace WindowsLab1
 
         private void btn_login_apply_Click(object sender, EventArgs e)
         {
-            if (comboBox_login.SelectedIndex == 1 && !passwordCorrect())
+            if (comboBox_login.SelectedIndex == 1 && !PasswordCorrect())
             {
                 MessageBox.Show("Неверный пароль!");
                 this.text_password.Text = "";
             }
             else
             {
-                if (comboBox_login.SelectedIndex == 1 && passwordCorrect())
+                if (comboBox_login.SelectedIndex == 1 && PasswordCorrect())
                 {
                     loginSuccessful = true;
                 }
