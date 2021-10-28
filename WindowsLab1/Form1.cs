@@ -24,19 +24,8 @@ namespace WindowsLab1
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
+            this.Location = new Point(100, 100);
         }
-
-        //public int GetSelectedIndex()
-        //{
-        //    return listBox_person.SelectedIndex;
-        //}
-
-        //public Person GetSelectedPerson(int selectedIndex)
-        //{
-        //    //Person person = new Person(personList[selectedIndex].CardNumber, personList[selectedIndex].Name, personList[selectedIndex].Birthday);
-        //    Person person = personList[selectedIndex];
-        //    return person;
-        //}
 
         void UpdateListBox()
         {
@@ -59,12 +48,6 @@ namespace WindowsLab1
 
             editForm.SetMode(mode);
             int indexToEdit = -1;
-
-            // If editForm is called to edit, get selected index (done before calling editForm, because it may be changed after)
-            //if (mode != EditForm.Mode.Create)
-            //{
-            //    indexToEdit = GetSelectedIndex();
-            //}
 
             // If form is called to edit (not create), set fields to selected person's values
             if (mode != EditForm.Mode.Create)

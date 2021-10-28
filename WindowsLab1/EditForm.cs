@@ -13,6 +13,15 @@ namespace WindowsLab1
     public partial class EditForm : Form
     {
 
+        //if (mode != Mode.Create)
+        //{
+        //    Form1 callerForm1 = (Form1)this.Owner;
+        //    Person inputPerson = callerForm1.GetSelectedPerson(callerForm1.GetSelectedIndex());
+        //    text_name.Text = inputPerson.Name;
+        //    text_card.Text = Convert.ToString(inputPerson.CardNumber);
+        //    date_picker.Value = inputPerson.Birthday;
+        //}
+
         public EditForm()
         {
             InitializeComponent();
@@ -24,8 +33,7 @@ namespace WindowsLab1
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.AcceptButton = btn_edit_apply;
-            //Console.WriteLine(this.Width.ToString() + " " + this.Height.ToString());
-            //Console.WriteLine(this.btn_edit_apply.Width.ToString() + " " + this.btn_edit_apply.Height.ToString());
+            this.Location = new Point(600, 165);
         }
 
         public enum Mode
@@ -35,22 +43,15 @@ namespace WindowsLab1
             EditAdmin
         }
 
+        int oldCardNumber = -1;
         Mode mode = Mode.Create;
 
         // Changes EditForm's mode
         public void SetMode(Mode mode)
         {
-            Color highlightColor = System.Drawing.Color.Coral;
-            Color backgroundColor = System.Drawing.Color.Yellow;
-
-            //if (mode != Mode.Create)
-            //{
-            //    Form1 callerForm1 = (Form1)this.Owner;
-            //    Person inputPerson = callerForm1.GetSelectedPerson(callerForm1.GetSelectedIndex());
-            //    text_name.Text = inputPerson.Name;
-            //    text_card.Text = Convert.ToString(inputPerson.CardNumber);
-            //    date_picker.Value = inputPerson.Birthday;
-            //}
+            Color lightHighlightColor = Color.LightSalmon;
+            Color darkHighlightColor = Color.LimeGreen;
+            Color backgroundColor = Color.LightGoldenrodYellow;
 
             this.mode = mode;
 
@@ -65,8 +66,11 @@ namespace WindowsLab1
                     //this.mode = Mode.EditAdmin;
                     text_card.Enabled = true;
                     date_picker.Enabled = true;
-                    label_card.BackColor = highlightColor;
-                    label_date.BackColor = highlightColor;
+                    oldCardNumber = int.Parse(text_card.Text);
+                    text_name.BackColor = lightHighlightColor;
+                    text_card.BackColor = lightHighlightColor;
+                    btn_edit_apply.BackColor = darkHighlightColor;
+                    btn_edit_cancel.BackColor = darkHighlightColor;
                     BackColor = backgroundColor;
                     break;
                 default:
@@ -77,7 +81,6 @@ namespace WindowsLab1
         }
 
         // Values initialization
-        int oldCardNumber = -1;
         int cardNumber = -1;
         string name = "";
         DateTime defaultBirthday = new DateTime(2000, 1, 1, 0, 0, 0);
@@ -114,7 +117,7 @@ namespace WindowsLab1
                     this.DialogResult = DialogResult.OK;
                 }
             }
-            // Close LoginForm, if opened
+            // Close LoginForm if opened
             if (loginFormOpened)
             {
                 loginForm.Close();
@@ -150,7 +153,7 @@ namespace WindowsLab1
                 loginForm.FormClosed += LoginForm_Closed;
                 loginForm.Show();
                 loginFormOpened = true;
-            }        
+            }
         }
 
         // Close LoginForm (called if user is set to 'user' or if password in 'admin' is correct)
@@ -159,11 +162,6 @@ namespace WindowsLab1
             if (loginForm.loginSuccessful)
             {
                 this.SetMode(Mode.EditAdmin);
-                //bool parseSuccess = int.TryParse(text_card.Text, out cardNumber);
-                //if (!(parseSuccess && text_card.Text.Length == 5))
-                //{
-                //    MessageBox.Show(wrongCardNumberMessage);
-                //}
             }
             loginFormOpened = false;
         }
@@ -171,22 +169,32 @@ namespace WindowsLab1
         // Button's mouse escaping algorithm
         void ButtonEscape(Button button)
         {
-            if (button.Location.X <= 15 - button.Location.X)
-            {
-                button.Location = new Point(this.Width - button.Width, button.Location.Y);
-            }
-            button.Location = new Point(button.Location.X - 15, button.Location.Y);
+            Point buttonCenter = new Point(button.Location.X + button.Height / 2, button.Location.Y + button.Height / 2);
+            Point cursorLocation = Cursor.Position;
+            int radiusX = button.Width / 2;
+            int radiusY = button.Height / 2;
+            int deltaX = radiusX - Math.Abs(buttonCenter.X - cursorLocation.X);
+            int deltaY = radiusY - Math.Abs(buttonCenter.Y - cursorLocation.Y);
+            int signX = Math.Sign(buttonCenter.X - cursorLocation.X);
+            int signY = Math.Sign(buttonCenter.Y - cursorLocation.Y);
+            button.Location = new Point(button.Location.X + signX * deltaX, button.Location.Y + signY * deltaY);
+        }
+
+        // Teleports button to random location
+        void ButtonTeleport(Button button)
+        {
+            Random random = new Random();
+            int randX = random.Next(16, this.Width - button.Width);
+            int randY = random.Next(40, this.Height - button.Height);
+            button.Location = new Point(randX - 16, randY - 40);
         }
 
         private void btn_edit_apply_mouseEnter(object sender, EventArgs e)
         {
             // In 'admin' mode, if card number is changed, 'apply' button starts to escape mouse, avoiding being pushed
-            if (mode == Mode.EditAdmin)
+            if (mode == Mode.EditAdmin && text_card.Text != oldCardNumber.ToString())
             {
-                if (!int.TryParse(text_card.Text, out cardNumber))
-                {
-                    //text_card.Text = oldCardNumber.ToString();
-                }
+                ButtonTeleport(btn_edit_apply);
             }
         }
     }

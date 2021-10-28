@@ -51,7 +51,7 @@
             // text_name
             // 
             this.text_name.Location = new System.Drawing.Point(122, 26);
-            this.text_name.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.text_name.Margin = new System.Windows.Forms.Padding(2);
             this.text_name.Name = "text_name";
             this.text_name.Size = new System.Drawing.Size(151, 20);
             this.text_name.TabIndex = 1;
@@ -61,7 +61,7 @@
             this.text_card.BackColor = System.Drawing.SystemColors.Window;
             this.text_card.ForeColor = System.Drawing.SystemColors.WindowText;
             this.text_card.Location = new System.Drawing.Point(122, 61);
-            this.text_card.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.text_card.Margin = new System.Windows.Forms.Padding(2);
             this.text_card.Name = "text_card";
             this.text_card.Size = new System.Drawing.Size(151, 20);
             this.text_card.TabIndex = 3;
@@ -89,7 +89,7 @@
             // date_picker
             // 
             this.date_picker.Location = new System.Drawing.Point(122, 98);
-            this.date_picker.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.date_picker.Margin = new System.Windows.Forms.Padding(2);
             this.date_picker.Name = "date_picker";
             this.date_picker.Size = new System.Drawing.Size(151, 20);
             this.date_picker.TabIndex = 5;
@@ -97,7 +97,7 @@
             // btn_edit_apply
             // 
             this.btn_edit_apply.Location = new System.Drawing.Point(26, 158);
-            this.btn_edit_apply.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_edit_apply.Margin = new System.Windows.Forms.Padding(2);
             this.btn_edit_apply.Name = "btn_edit_apply";
             this.btn_edit_apply.Size = new System.Drawing.Size(109, 35);
             this.btn_edit_apply.TabIndex = 6;
@@ -110,7 +110,7 @@
             // 
             this.btn_edit_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btn_edit_cancel.Location = new System.Drawing.Point(164, 158);
-            this.btn_edit_cancel.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btn_edit_cancel.Margin = new System.Windows.Forms.Padding(2);
             this.btn_edit_cancel.Name = "btn_edit_cancel";
             this.btn_edit_cancel.Size = new System.Drawing.Size(109, 35);
             this.btn_edit_cancel.TabIndex = 7;
@@ -132,7 +132,7 @@
             this.Controls.Add(this.text_name);
             this.Controls.Add(this.label_name);
             this.KeyPreview = true;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "EditForm";
             this.Text = "Запись";
             this.Load += new System.EventHandler(this.EditForm_Load);

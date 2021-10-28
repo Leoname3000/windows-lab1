@@ -25,24 +25,44 @@ namespace WindowsLab1
             this.MinimizeBox = false;
             this.AcceptButton = btn_login_apply;
             this.comboBox_login.SelectedIndex = 0;
+            this.Location = new Point(625, 215);
         }
 
         private void comboBox_login_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (comboBox_login.SelectedIndex == 1)
             {
-                this.text_password.Enabled = true;
+                text_password.Enabled = true;
             }
             else
             {
-                this.text_password.Enabled = false;
+                text_password.Enabled = false;
+                text_password.Text = "";
             }
         }
 
-        bool PasswordCorrect()
+        String GetHash(String sourceString)
         {
-            String password = "aboba";
-            if (text_password.Text == password)
+            //using (MD5 md5 = MD5.Create())
+            //{
+                MD5 md5 = MD5.Create();
+                byte[] sourceBytes = Encoding.ASCII.GetBytes(sourceString);
+                byte[] hashBytes = md5.ComputeHash(sourceBytes);
+
+                // Convert the byte array to hexadecimal string
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < hashBytes.Length; i++)
+                {
+                    sb.Append(hashBytes[i].ToString("x2"));
+                }
+                return sb.ToString();
+            //}
+        }
+
+        bool CompareHash(String sourceString)
+        {
+            String hashString = "3f11e8d8d634bc8704b1a1acae919228"; // password = "aboba"
+            if (hashString == GetHash(sourceString))
             {
                 return true;
             }
@@ -53,17 +73,16 @@ namespace WindowsLab1
 
         private void btn_login_apply_Click(object sender, EventArgs e)
         {
-            if (comboBox_login.SelectedIndex == 1 && !PasswordCorrect())
+            String loginPassConcat = comboBox_login.Text + text_password.Text;
+            loginSuccessful = CompareHash(loginPassConcat);
+            //Console.WriteLine(GetHash(loginPassConcat)); // <-- Uncomment to get hash
+            if (comboBox_login.SelectedIndex == 1 && !loginSuccessful)
             {
                 MessageBox.Show("Неверный пароль!");
-                this.text_password.Text = "";
+                text_password.Text = "";
             }
             else
             {
-                if (comboBox_login.SelectedIndex == 1 && PasswordCorrect())
-                {
-                    loginSuccessful = true;
-                }
                 this.Close();
             }
         }
