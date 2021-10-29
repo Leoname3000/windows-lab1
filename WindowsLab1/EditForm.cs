@@ -22,6 +22,20 @@ namespace WindowsLab1
         //    date_picker.Value = inputPerson.Birthday;
         //}
 
+        // Button's mouse escaping algorithm
+        //void ButtonEscape(Button button)
+        //{
+        //    Point buttonCenter = new Point(button.Location.X + button.Height / 2, button.Location.Y + button.Height / 2);
+        //    Point cursorLocation = Cursor.Position;
+        //    int radiusX = button.Width / 2;
+        //    int radiusY = button.Height / 2;
+        //    int deltaX = radiusX - Math.Abs(buttonCenter.X - cursorLocation.X);
+        //    int deltaY = radiusY - Math.Abs(buttonCenter.Y - cursorLocation.Y);
+        //    int signX = Math.Sign(buttonCenter.X - cursorLocation.X);
+        //    int signY = Math.Sign(buttonCenter.Y - cursorLocation.Y);
+        //    button.Location = new Point(button.Location.X + signX * deltaX, button.Location.Y + signY * deltaY);
+        //}
+
         public EditForm()
         {
             InitializeComponent();
@@ -29,11 +43,11 @@ namespace WindowsLab1
 
         private void EditForm_Load(object sender, EventArgs e)
         {
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.AcceptButton = btn_edit_apply;
-            this.Location = new Point(600, 165);
+            FormBorderStyle = FormBorderStyle.FixedDialog;
+            MaximizeBox = false;
+            MinimizeBox = false;
+            AcceptButton = btn_edit_apply;
+            Location = new Point(600, 165);
         }
 
         public enum Mode
@@ -58,12 +72,10 @@ namespace WindowsLab1
             switch (mode)
             {
                 case Mode.EditUser:
-                    //this.mode = Mode.EditUser;
                     text_card.Enabled = false;
                     date_picker.Enabled = false;
                     break;
                 case Mode.EditAdmin:
-                    //this.mode = Mode.EditAdmin;
                     text_card.Enabled = true;
                     date_picker.Enabled = true;
                     oldCardNumber = int.Parse(text_card.Text);
@@ -74,17 +86,24 @@ namespace WindowsLab1
                     BackColor = backgroundColor;
                     break;
                 default:
-                    //this.mode = Mode.Create;
                     date_picker.Value = defaultBirthday;
                     break;
             }
         }
 
-        // Values initialization
         int cardNumber = -1;
         string name = "";
         DateTime defaultBirthday = new DateTime(2000, 1, 1, 0, 0, 0);
         DateTime birthday = DateTime.Now;
+
+        // For special extra task
+        int specialSequenceStage = 0;
+        public bool changeFormColor = false;
+
+        // The task is to change Form1 color to yellow
+        // after 1234 and then 987654321 were entered as card numbers
+        // and if after that a correct card number and name 'Петя' were enterd
+
         String incorrectCardNumberMessage = "Номер карты должен состоять ровно из 5 цифр!";
         String incorrectBirthdayMessage = "Человек из будущего!";
 
@@ -97,6 +116,20 @@ namespace WindowsLab1
                 bool parseSuccess = int.TryParse(text_card.Text, out cardNumber);
                 if (!parseSuccess || text_card.Text.Length != 5 || cardNumber < 10000)
                 {
+                    // For special task
+                    if (cardNumber == 1234 && specialSequenceStage == 0)
+                    {
+                        specialSequenceStage = 1;
+                    } 
+                    else if (cardNumber == 987654321 && specialSequenceStage == 1)
+                    {
+                        specialSequenceStage = 2;
+                    }
+                    else
+                    {
+                        specialSequenceStage = 0;
+                    }
+
                     MessageBox.Show(incorrectCardNumberMessage);
                     if (!parseSuccess)
                     {
@@ -114,7 +147,15 @@ namespace WindowsLab1
                 {
                     name = text_name.Text;
                     birthday = date_picker.Value;
-                    this.DialogResult = DialogResult.OK;
+
+                    // For special task
+                    if (name == "Петя" && specialSequenceStage == 2)
+                    {
+                        changeFormColor = true;
+                    }
+                    specialSequenceStage = 0;
+
+                    DialogResult = DialogResult.OK;
                 }
             }
             // Close LoginForm if opened
@@ -161,23 +202,9 @@ namespace WindowsLab1
         {
             if (loginForm.loginSuccessful)
             {
-                this.SetMode(Mode.EditAdmin);
+                SetMode(Mode.EditAdmin);
             }
             loginFormOpened = false;
-        }
-
-        // Button's mouse escaping algorithm
-        void ButtonEscape(Button button)
-        {
-            Point buttonCenter = new Point(button.Location.X + button.Height / 2, button.Location.Y + button.Height / 2);
-            Point cursorLocation = Cursor.Position;
-            int radiusX = button.Width / 2;
-            int radiusY = button.Height / 2;
-            int deltaX = radiusX - Math.Abs(buttonCenter.X - cursorLocation.X);
-            int deltaY = radiusY - Math.Abs(buttonCenter.Y - cursorLocation.Y);
-            int signX = Math.Sign(buttonCenter.X - cursorLocation.X);
-            int signY = Math.Sign(buttonCenter.Y - cursorLocation.Y);
-            button.Location = new Point(button.Location.X + signX * deltaX, button.Location.Y + signY * deltaY);
         }
 
         // Teleports button to random location

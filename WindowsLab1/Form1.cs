@@ -62,6 +62,12 @@ namespace WindowsLab1
             // Modal form editForm, in turn, calls GetSelectedPerson method if needed (if it is called to edit)
             Person personToAdd = editForm.GetPerson(); // Get values from EditForm
 
+            // If special sequence is completed, change color
+            if (editForm.changeFormColor)
+            {
+                BackColor = Color.Yellow;
+            }
+
             // If EditForm returned OK, apply values (values are always correct, otherwise editForm wouldn't return OK)
             if (result == DialogResult.OK && personToAdd.CardNumber > -1 && personToAdd.Name != "")
             {
